@@ -1,0 +1,15 @@
+{
+  "name": "yunjs.monorepo",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "core/*",
+    "packages/*",
+    "test",
+    "examples/*"
+  ],
+  "private": true,
+  "author": "",
+  "license": "MIT"
+}

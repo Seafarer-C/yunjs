@@ -1,0 +1,13 @@
+{
+  "npmClient": "npm", 
+  "version": "independent",
+  "useWorkspaces": true,
+  "command": {
+    "publish": {
+      "message": "chore(release): publish"
+    }
+  },
+  "ignoreChanges": ["**/*.md"],
+  "registry": "https://registry-npm.gaoding.com",
+  "packages": ["core/*", "packages/*", "test", "examples/*"]
+}

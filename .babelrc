@@ -1,0 +1,9 @@
+{
+  "presets": ["@babel/preset-react"],
+  "env": {
+    "development": {
+      "presets": [["@babel/preset-react", { "development": true }]]
+    }
+  },
+  "plugins": ["syntax-jsx", "transform-jsx", "transform-class-properties"]
+}
