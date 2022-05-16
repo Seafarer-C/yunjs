@@ -41,7 +41,6 @@ export class YunElement<T = Object> extends HTMLElement {
         this.props[element.name] = parseJSONString(element?.value);
       }
     }
-    console.log(this.props);
   }
 
   // HTMLElement 生命周期函数
@@ -53,14 +52,15 @@ export class YunElement<T = Object> extends HTMLElement {
     //   mode: "open",
     // })
     const { html, effects, listeners } = compiler(this);
-    console.log(listeners, "listeners");
     this.innerHTML = html;
     this._effects = effects;
     this.attrToProps();
+    console.log(effects);
+    // TODO: 不应该遍历全部属性，只需要遍历 effects 即可
     for (const key of Object.getOwnPropertyNames(this)) {
       // 遍历所有的内部字段
       // 字段类型为 object 则使用 Proxy 实现响应式
-      if (typeof this[key] === "function") break;
+      if (typeof this[key] === "function") continue;
       if (typeof this[key] === "object") {
         this[key] = new Proxy(this[key], {
           get: (target, key) => {
@@ -81,12 +81,12 @@ export class YunElement<T = Object> extends HTMLElement {
           set(value) {
             this._state[key] = value;
             const handles = this._effects[key];
-            console.log("handles", handles);
             handles?.forEach((handle) => {
               const dom = document.querySelector(
                 `[data-yun-id='${handle.yun_id}']`
               );
-              if (value === false) {
+              // TODO: 关于变更 attribute 的动作还需要细化
+              if (value === false || value === "false") {
                 dom.removeAttribute(handle.attribute);
               } else {
                 dom.setAttribute(handle.attribute, value);
@@ -98,13 +98,10 @@ export class YunElement<T = Object> extends HTMLElement {
     }
     for (const key of Object.getOwnPropertyNames(listeners)) {
       const eventArray = listeners[key];
-      if (typeof this[key] !== "function") break;
-      eventArray.forEach(({ event_name }) => {
-        // TODO: 移除开头 on 的逻辑应放到编译阶段
-        const evt_name = event_name.startsWith("on")
-          ? event_name.slice(2, event_name.length)
-          : event_name;
-        this.addEventListener(evt_name, this[key]);
+      if (typeof this[key] !== "function") continue;
+      eventArray.forEach(({ yun_id, event_name }) => {
+        const dom = document.querySelector(`[data-yun-id='${yun_id}']`);
+        dom.addEventListener(event_name, this[key].bind(this));
       });
     }
   }

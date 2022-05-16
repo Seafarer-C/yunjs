@@ -23,18 +23,18 @@ class Props {
 export class MyDemo extends YunElement<Props> {
   constructor() {
     super();
-
-    setTimeout(() => {
-      this.a = this.props.aa;
-    }, 100);
   }
 
   template = `
         <div>
           <h1>Yunjs</h1>
+            <select value={readonly} onchange={changeReadonly}>
+            <option value="true">禁用</option>
+            <option value="false">启用</option>
+          </select>          
+          <input value={a} oninput={changeA} />
+          <input value={a} oninput={changeA} disabled={readonly}  />
 
-          <input value={a} oninput={test1} />
-          <input value={a} oninput={test1} disabled={readonly}  />
           <template id="a123">
           123
           </template>
@@ -45,18 +45,25 @@ export class MyDemo extends YunElement<Props> {
           </div>
         <h2>
             End
+
             <slot name="my-text" />
-            <my-test par={a}></my-test>
+           <!--  <my-test par={a}></my-test> -->
         </h2>
     `;
   a = 12;
-  readonly = true;
-  size = "small";
+  b = "你好";
+  readonly = false;
   www = {
     a: 1,
   };
-  test1(e) {
+
+  changeA(e) {
     this.a = e.target.value;
-    console.log(this.a, "change");
+  }
+  changeReadonly(e) {
+    this.readonly = e.target.value;
+  }
+  changeB(e) {
+    this.b = e.target.value;
   }
 }

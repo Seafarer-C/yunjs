@@ -12,5 +12,14 @@
     <my-demo aa="300">
       <h3 slot="my-text">why？</h3>
     </my-demo>
+
+    <input data-yun-id="sss" />
+    <script>
+      document
+        .querySelector(`[data-yun-id='sss']`)
+        .addEventListener("input", (e) => {
+          console.log("一睁眼");
+        });
+    </script>
   </body>
 </html>

@@ -20,7 +20,8 @@ export function jsonTransform(
   listeners: { [key: string]: Array<EventHandle> },
   options
 ) {
-  // 标签属性处理逻辑
+  // TODO：这部分代码可读性不高，需要优化一下
+  // 标签属性及事件处理逻辑
   if (json.attributes) {
     json.attributes["data-yun-id"] = Math.random();
     for (const key in json.attributes) {
@@ -52,10 +53,9 @@ export function jsonTransform(
         listeners[data_key] = listeners[data_key] ?? [];
         listeners[data_key].push({
           yun_id: json.attributes["data-yun-id"],
-          event_name: key,
+          event_name: key.slice(2, key.length),
         });
         delete json.attributes[key];
-        console.log("事件", key);
       }
     }
   }
