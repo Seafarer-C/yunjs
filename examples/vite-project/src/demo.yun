@@ -1,0 +1,41 @@
+<template>
+    <div id="div_123">
+        <h1>Yunjs</h1>
+        <select value={readonly} onchange={changeReadonly}>
+            <option value="false">启用</option>
+            <option value="true">禁用</option>
+        </select>          
+        <input value={form.a} oninput={changeA} />
+        <input value={a} oninput={changeA} disabled={readonly}  />  
+    </div>
+</template>
+
+<script>
+import { YunElement } from "yunjs";
+
+export class MyForm extends YunElement {
+  form = {
+    a: 1
+  }
+    a = 12;
+    b = "你好";
+    readonly = false;
+    
+    changeA(e) {
+    this.a = e.target.value;
+  }
+  changeReadonly(e) {
+    this.readonly = e.target.value;
+  }
+  changeB(e) {
+    this.b = e.target.value;
+  }
+  hello(e) {
+    console.log("hello～～", e);
+  }
+
+    submit() {
+        console.log(this.formState);
+    }
+}
+</script>

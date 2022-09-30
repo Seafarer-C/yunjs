@@ -1,16 +1,18 @@
 // 副作用事件
-class EffectHandle {
+interface EffectHandle {
   // 数据作用的 dom 节点的 yun-id
   yun_id: string;
   // 影响的 attribute
   attribute?: string;
 }
 // 事件
-class EventHandle {
+interface EventHandle {
   // 数据作用的 dom 节点的 yun-id
   yun_id: string;
   // 事件
   event_name?: string;
+  // 参数
+  params?: Array<any>;
 }
 
 // 将 json 转化为标准 html 的 json 格式
@@ -23,7 +25,7 @@ export function jsonTransform(
   // TODO：这部分代码可读性不高，需要优化一下
   // 标签属性及事件处理逻辑
   if (json.attributes) {
-    json.attributes["data-yun-id"] = Math.random();
+    json.attributes["data-yun-id"] = json.tag + "_" + Math.random();
     for (const key in json.attributes) {
       // attribute 对应的表达式或变量
       // TODO: 需要处理一下表达式的逻辑

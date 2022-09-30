@@ -1,3 +1,5 @@
+import { compiler } from "@yunjs/compiler-back";
+
 const parseJSONString = (jsonStr: string) => {
   try {
     return JSON.parse(jsonStr);
@@ -10,7 +12,7 @@ export class YunElement<T = Object> extends HTMLElement {
   // 是否为 Shadow DOM
   IS_SHADOW_DOM: boolean = false;
   // 用户自定义的模版
-  protected _template: string;
+  protected template: string;
 
   // 外部传参
   protected readonly props: T = <T>{};
@@ -19,8 +21,7 @@ export class YunElement<T = Object> extends HTMLElement {
   shadowRoot;
   // 内部变量管理
   private _state = {};
-  private _effects = {};
-  private _listeners = {};
+  private _effects: { [key: string]: Array<Function> } = {};
 
   $emit(name: string, options: Object) {
     let evt = new CustomEvent(name, {
@@ -50,10 +51,13 @@ export class YunElement<T = Object> extends HTMLElement {
     // this.attachShadow({
     //   mode: "open",
     // })
-    this.innerHTML = this._template;
+    const { html, effects, listeners } = compiler(this);
+    this.innerHTML = html;
+    this._effects = effects;
     this.attrToProps();
+    console.log(effects);
     // 不应该遍历全部属性，只需要遍历 effects 即可
-    for (const key of Object.getOwnPropertyNames(this._effects)) {
+    for (const key of Object.getOwnPropertyNames(effects)) {
       // 遍历所有的内部字段
       // 字段类型为 object 则使用 Proxy 实现响应式
       if (typeof this[key] === "function") continue;
@@ -78,8 +82,8 @@ export class YunElement<T = Object> extends HTMLElement {
             this._state[key] = value;
             const handles = this._effects[key];
             handles?.forEach((handle) => {
-              const dom = this.querySelector(
-                `[data-yun-key='${handle.yun_id}']`
+              const dom = document.querySelector(
+                `[data-yun-id='${handle.yun_id}']`
               );
               // TODO: 关于变更 attribute 的动作还需要细化
               if (value === false || value === "false") {
@@ -92,11 +96,11 @@ export class YunElement<T = Object> extends HTMLElement {
         });
       }
     }
-    for (const key of Object.getOwnPropertyNames(this._listeners)) {
-      const eventArray = this._listeners[key];
+    for (const key of Object.getOwnPropertyNames(listeners)) {
+      const eventArray = listeners[key];
       if (typeof this[key] !== "function") continue;
       eventArray.forEach(({ yun_id, event_name }) => {
-        const dom = this.querySelector(`[data-yun-key='${yun_id}']`);
+        const dom = document.querySelector(`[data-yun-id='${yun_id}']`);
         dom.addEventListener(event_name, this[key].bind(this));
       });
     }

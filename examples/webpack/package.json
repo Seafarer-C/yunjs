@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "webpack",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -33,6 +33,6 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
-    "yunjs": "^0.0.0"
+    "yunjs": "workspace:*"
   }
 }

@@ -1,14 +1,11 @@
 {
-  "name": "@yunjs/compiler",
+  "name": "@yunjs/compiler-back",
   "version": "0.0.0",
   "description": "> TODO: description",
-  "author": "Seafarer-C <seafarerc1996@gamil.com>",
+  "author": "haiyuan <haiyuan@gaoding.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "dist/index.js",
-  "exports": {
-    ".": "./dist/index.js"
-  },
+  "main": "index.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -18,12 +15,12 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "test": "npx esno test/sfc.test.ts"
+    "test": "npx esno test/index.cjs"
   },
   "devDependencies": {
     "@babel/core": "7.16.5",
     "@babel/generator": "7.19.3",
-    "rollup": "2.79.1",
+    "rollup": "1.31.0",
     "@rollup/plugin-typescript": "8.5.0",
     "rollup-plugin-babel": "4.4.0",
     "@babel/preset-env": "7.19.3"

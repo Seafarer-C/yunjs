@@ -1,4 +1,4 @@
-import { compiler } from "../core/compiler";
+import { compiler } from "../core/compiler-back";
 
 const template = `
     <div :readonly="a">

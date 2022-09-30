@@ -1,15 +1,12 @@
 {
   "name": "yunjs.monorepo",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "workspaces": [
-    "core/*",
-    "packages/*",
-    "test",
-    "examples/*"
-  ],
-  "private": true,
-  "author": "",
-  "license": "MIT"
+  "author": "Seafarer-C",
+  "license": "MIT",
+  "scripts": {
+    "dev:webpack": "turbo run dev --filter=./examples/*"
+  },
+  "devDependencies": {
+    "turbo": "^1.3.1"
+  }
 }

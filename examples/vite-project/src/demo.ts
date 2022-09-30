@@ -5,32 +5,34 @@ class MyTest extends YunElement {
     super();
     setTimeout(() => {
       this.b = this.props["par"];
+      this.$emit("hello", { a: 123 });
     }, 2000);
   }
   b = "";
+  say() {
+    this.$emit("hello", { a: 123 });
+  }
   template = `
         <h1>
             这是简单的小测试
             <input value={b}  />
+            <button onclick={say}>hello</button>
         </h1>
     `;
 }
 customElements.define("my-test", MyTest);
 
 class Props {
-  aa: number;
+  aa: number = 1;
 }
-export class MyDemo extends YunElement<Props> {
-  constructor() {
-    super();
-  }
 
+export class MyDemo extends YunElement<Props> {
   template = `
         <div>
           <h1>Yunjs</h1>
             <select value={readonly} onchange={changeReadonly}>
-            <option value="true">禁用</option>
             <option value="false">启用</option>
+            <option value="true">禁用</option>
           </select>          
           <input value={a} oninput={changeA} />
           <input value={a} oninput={changeA} disabled={readonly}  />
@@ -47,7 +49,7 @@ export class MyDemo extends YunElement<Props> {
             End
 
             <slot name="my-text" />
-           <!--  <my-test par={a}></my-test> -->
+            <my-test par={a} onhello={hello}></my-test>
         </h2>
     `;
   a = 12;
@@ -65,5 +67,8 @@ export class MyDemo extends YunElement<Props> {
   }
   changeB(e) {
     this.b = e.target.value;
+  }
+  hello(e) {
+    console.log("hello～～", e);
   }
 }
